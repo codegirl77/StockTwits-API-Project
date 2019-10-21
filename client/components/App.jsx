@@ -19,9 +19,9 @@ class App extends Component{
         let stockSymbol = this.state.stockSymbolInput.toLowerCase()
         axios.get(`http://api.stocktwits.com/api/2/streams/symbol/${stockSymbol}.json`,  {
             headers: { 
-              "Access-Control-Allow-Origin": "*",
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
             },
-          responseType: 'json',
            })
           .then((response) => {
             let symbolsMessagesUpdate = this.state.storedSymbolsMessages
