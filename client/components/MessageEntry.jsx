@@ -1,10 +1,11 @@
 import React from 'react';
+import styles from '../public/styles.css'
 
 const MessageEntry = ({message}) =>(
-  <div>
-      <div>Created At:{message.created_at}</div>
-      <div>Message:{message.body}</div>
-      <div>Username:{message.user.username}</div>
+  <div className='messageEntryContainer'>
+      <div className='messageEntryCreatedAt'>Created At: {message.created_at}</div>
+      <div className='messageEntryMessage'>Message: {message.body}</div>
+      <div className='messageEntryUsername'>Username: {message.user.username}</div>
   </div>
 )
 

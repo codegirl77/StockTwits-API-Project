@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import MessageList from './MessageList.jsx'
+import styles from '../public/styles.css'
 
 class App extends Component{
     constructor(props){
@@ -22,7 +23,8 @@ class App extends Component{
             this.setState({
               storedSymbolsMessages: symbolsMessagesUpdate,
               stockSymbols: Object.keys(symbolsMessagesUpdate),
-              currentSymbol: this.state.stockSymbolInput
+              currentSymbol: this.state.stockSymbolInput,
+              stockSymbolInput:''
             })
           })
           .catch((error)=> {
@@ -60,24 +62,31 @@ class App extends Component{
 
     render(){
         return(
-          <div>
-            <form>
-              <label>
-                 Stock Symbol
-                <input
-                  name="stockSymbolInput"
-                  onChange={this.handleInputChange} />
-              </label>
-              <button onClick={this.getSymbolMessages}>Search</button>
-              <button onClick={this.deleteSymbol}>Delete</button>
-            </form>
-            {this.state.stockSymbols.map((symbol) =>(
-                <div onClick={()=>(this.changeCurrentSymbol(symbol))}>{symbol}</div>
-            ))}
+          <div className='bodyContainer'>
+            <div className='formContainer'>
+                <form>
+                <label>
+                    Input a Stock Symbol  
+                    <input
+                    type="text" 
+                    value={this.state.stockSymbolInput}
+                    name="stockSymbolInput"
+                    onChange={this.handleInputChange} />
+                </label>
+                <button  onClick={this.getSymbolMessages}>Search</button>
+                <button onClick={this.deleteSymbol}>Delete</button>
+                </form>
+            </div>
+            <div className='stockSymbolContainer'>
+                {this.state.stockSymbols.map((symbol) =>(
+                    <div className= 'stockSymbolStyle' onClick={()=>(this.changeCurrentSymbol(symbol))}>{symbol}</div>
+                ))}
+            </div>
             {this.state.currentSymbol !== '' && <MessageList messages={this.state.storedSymbolsMessages[this.state.currentSymbol]}/>}
           </div>
         )
     }
 }
+
 
 export default App;
