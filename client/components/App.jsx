@@ -16,19 +16,23 @@ class App extends Component{
     }
 
     getSymbolMessages = () => {
-        axios.get(`https://api.stocktwits.com/api/2/streams/symbol/${this.state.stockSymbolInput}.json`)
+        let stockSymbol = this.state.stockSymbolInput.toLowerCase()
+        axios.get(`https://api.stocktwits.com/api/2/streams/symbol/${stockSymbol}.json`)
           .then((response) => {
             let symbolsMessagesUpdate = this.state.storedSymbolsMessages
-            symbolsMessagesUpdate[this.state.stockSymbolInput] = response.data.messages
+            symbolsMessagesUpdate[stockSymbol] = response.data.messages
             this.setState({
               storedSymbolsMessages: symbolsMessagesUpdate,
               stockSymbols: Object.keys(symbolsMessagesUpdate),
-              currentSymbol: this.state.stockSymbolInput,
-              stockSymbolInput:''
+              currentSymbol: stockSymbol,
+              stockSymbolInput:'',
+              errorIsOn:false
             })
           })
           .catch((error)=> {
-            console.log(error);
+            this.setState({
+                errorIsOn:true
+            })
           })
           event.preventDefault();
     }
@@ -64,18 +68,17 @@ class App extends Component{
         return(
           <div className='bodyContainer'>
             <div className='formContainer'>
-                <form>
-                <label>
-                    Input a Stock Symbol  
+                   <div className="formName">Input a Stock Symbol</div> 
                     <input
                     type="text" 
                     value={this.state.stockSymbolInput}
                     name="stockSymbolInput"
                     onChange={this.handleInputChange} />
-                </label>
                 <button  onClick={this.getSymbolMessages}>Search</button>
                 <button onClick={this.deleteSymbol}>Delete</button>
-                </form>
+            </div>
+            <div className='notificationsContainer'>
+               {this.state.errorIsOn && <div className='error'>Not a Vaild Stock Symbol</div>}
             </div>
             <div className='stockSymbolContainer'>
                 {this.state.stockSymbols.map((symbol) =>(
